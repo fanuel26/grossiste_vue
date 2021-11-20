@@ -127,6 +127,16 @@ input.form-control {
     }
 }
 
+select.select {
+    border: 1px solid $light;
+    border-radius: 5px;
+
+    &:focus {
+        box-shadow: none;
+        border: 1px solid $primary;
+        border-radius: 5px;
+    }
+}
 
 .input-group {
     
@@ -692,5 +702,10 @@ img.border {
     text-decoration: line-through;
 }
 
+img.pub-img {
+    width: 300px;
+    height: 300px;
+    border: 1px solid $light;
+}
 
 @import './responsive.scss';

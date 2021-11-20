@@ -102,9 +102,36 @@
         </div>
       </div>
       <div class="row">
-          <div class="table-responsive col-md-12 my-4">
-              <table></table>
+        <div class="col-md-12 my-4">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover display">
+              <thead class="bg-secondary text-white">
+                <tr>
+                  <th>Date de création</th>
+                  <th>Nom de categorie</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="cat in categories" :key="cat.id">
+                  <td>{{ cat.created_at }}</td>
+                  <td>{{ cat.nom }}</td>
+                  <td class="d-flex justify-content-center">
+                      <button class="btn mx-2 btn-info btn-sm">
+                          Voire ses sous categorie
+                      </button>
+                      <button class="btn mx-2 btn-success btn-sm">
+                          Modifier
+                      </button>
+                      <button class="btn mx-2 btn-sm btn-primary">
+                          Supprimer
+                      </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+        </div>
       </div>
     </section>
 
@@ -178,11 +205,44 @@
 
 <script>
 import Header from "../layouts/header.vue";
-import 'datatables.net-responsive-bs4'
+import $ from "jquery";
+import "datatables.net-responsive-bs4";
 
 export default {
   components: {
     Header,
   },
+  data() {
+    return {
+      callback: "http://127.0.0.1:8000/api",
+      categories: null,
+    };
+  },
+  mounted() {
+    this.$http.get(`${this.callback}/categories`, {}).then(
+      (response) => {
+        let data = response.body;
+
+        console.log(data);
+        if (data.status == true) {
+          this.categories = data.data;
+
+          setTimeout(() => {
+            $("table.display").DataTable({
+              responsive: true,
+              language: {
+                url: "https://cdn.datatables.net/plug-ins/1.10.21/i18n/French.json",
+              },
+              order: [[0, "asc"]],
+            });
+          }, 1000);
+        }
+      },
+      (response) => {
+        console.log(response);
+      }
+    );
+  },
+  methods: {},
 };
 </script>
