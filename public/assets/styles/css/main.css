@@ -325,29 +325,35 @@ select.select:focus {
 }
 
 .btn-primary {
-  background: linear-gradient(to right, #e51b23, #F64444) !important;
+  background: #e51b23 !important;
   border: 1px solid #e51b23;
+  transition: all 0.5s ease-in-out;
 }
 .btn-primary:hover {
   background: #e51b23 !important;
   border: 1px solid #e51b23;
+  transition: all 0.5s ease-in-out;
 }
 .btn-primary:focus {
   background: #e51b23 !important;
   box-shadow: none;
+  transition: all 0.5s ease-in-out;
 }
 
 .btn-warning {
   background: #f5cf36;
   border: 1px solid #f5cf36;
+  transition: all 0.5s ease-in-out;
 }
 .btn-warning:hover {
   background: #f5cf36;
   border: 1px solid #f5cf36;
+  transition: all 0.5s ease-in-out;
 }
 .btn-warning:focus {
   background: #f5cf36;
   box-shadow: none;
+  transition: all 0.5s ease-in-out;
 }
 
 .btn-light {
@@ -365,17 +371,20 @@ select.select:focus {
 }
 
 .btn-secondary {
-  background: linear-gradient(to right, #6c757d, #a2abb4);
+  background: #6c757d;
   border: 1px solid #6c757d;
+  transition: all 0.5s ease-in-out;
 }
 .btn-secondary:hover {
   background: #6c757d;
   border: 1px solid #6c757d;
+  transition: all 0.5s ease-in-out;
 }
 .btn-secondary:focus {
   background: #6c757d;
   border: 1px solid #6c757d;
   box-shadow: none;
+  transition: all 0.5s ease-in-out;
 }
 
 .text-justify {
@@ -412,7 +421,18 @@ select.select:focus {
   color: #000;
 }
 
-/* carousel css */
+.colo {
+  width: 40px;
+  max-height: 5px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #f2f2f2;
+}
+
+.save {
+  font-size: 18px;
+}
+
 .owl-carousel.owl-theme .owl-nav .owl-prev {
   position: absolute;
   display: block;

@@ -378,34 +378,42 @@ select.select {
     margin-left: 55px;
 }
 
+
 .btn-primary {
-    background: $gradient-primary !important;
+    background: $primary !important;
     border: 1px solid $primary;
+    transition: all 0.5s ease-in-out;
 
     &:hover {
         background: $primary !important;
         border: 1px solid $primary;
+        transition: all 0.5s ease-in-out;
     }
 
     &:focus {
         background: $primary !important;
         box-shadow: none;
+        transition: all 0.5s ease-in-out;
     }
 }
+
 
 
 .btn-warning {
     background: $jaune;
     border: 1px solid $jaune;
+    transition: all 0.5s ease-in-out;
 
     &:hover {
         background: $jaune;
         border: 1px solid $jaune;
+        transition: all 0.5s ease-in-out;
     }
 
     &:focus {
         background: $jaune;
         box-shadow: none;
+        transition: all 0.5s ease-in-out;
     }
 }
 
@@ -427,18 +435,21 @@ select.select {
 }
 
 .btn-secondary {
-    background: $gradient-secondary;
+    background: $secondary;
     border: 1px solid $secondary;
+    transition: all 0.5s ease-in-out;
 
     &:hover {
         background: $secondary;
         border: 1px solid $secondary;
+        transition: all 0.5s ease-in-out;
     }
 
     &:focus {
         background: $secondary;
         border: 1px solid $secondary;
         box-shadow: none;
+        transition: all 0.5s ease-in-out;
     }
 }
 
@@ -480,8 +491,17 @@ select.select {
 }
 
 
-/* carousel css */
+.colo {
+    width: 40px;
+    max-height: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid $light;
+  }
 
+  .save {
+      font-size: 18px;
+  }
 
 .owl-carousel.owl-theme .owl-nav .owl-prev {
     position: absolute;
