@@ -290,7 +290,14 @@ select.select:focus {
   width: 50px;
 }
 
+.Slide {
+  width: 100%;
+  border-radius: 5px;
+}
+
 .pubs-img {
+  width: 100%;
+  height: 100%;
   border-radius: 5px;
 }
 
@@ -338,6 +345,29 @@ select.select:focus {
   background: #e51b23 !important;
   box-shadow: none;
   transition: all 0.5s ease-in-out;
+}
+
+.carousel-item .carou-img {
+  width: 100%;
+  height: 300px;
+}
+
+.thumb {
+  display: block;
+  overflow: hidden;
+  height: 300px;
+  width: 100%;
+}
+
+.thumb img {
+  display: block;
+  /* Otherwise it keeps some space around baseline */
+  min-width: 100%;
+  /* Scale up to fill container width */
+  min-height: 100%;
+  /* Scale up to fill container height */
+  -ms-interpolation-mode: bicubic;
+  /* Scaled images look a bit better in IE now */
 }
 
 .btn-warning {

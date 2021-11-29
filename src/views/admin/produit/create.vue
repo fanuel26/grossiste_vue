@@ -17,7 +17,7 @@
       <div class="mt-4 row">
         <div class="col-md-12">
           <div class="p-4 card">
-            <form @submit.prevent="create_produit" class="mt-4" method="post">
+            <form @submit.prevent="create_produit" id="form" class="mt-4" method="post">
               <div class="row">
                 <div class="col-md-6">
                   <div class="row">
@@ -99,7 +99,7 @@
                     </div>
 
                     <div class="mb-4 col-md-6 form-group">
-                      <label for="">Selectionner la marque</label>
+                      <label for="">Selectionner la marque*</label>
                       <select v-model="marque" class="form-control" id="">
                         <option
                           v-bind:value="cat.id"
@@ -114,7 +114,7 @@
                 </div>
 
                 <div class="mb-4 col-md-6 form-group">
-                  <label for="">Description de produit</label>
+                  <label for="">Description de produit*</label>
                   <textarea
                     v-model="description"
                     cols="30"
@@ -127,7 +127,7 @@
                 <div class="col-md-12">
                   <div class="row">
                     <div class="px-4 mb-4 col-md-4">
-                      <h5 class="mb-2">Gestionnaire de prix</h5>
+                      <h5 class="mb-2">Gestionnaire de prix*</h5>
                       <div class="mb-4 input-group">
                         <select v-model="nbr" class="form-control select">
                           <option
@@ -171,7 +171,7 @@
                       </div>
                     </div>
                     <div class="px-4 mb-4 col-md-4">
-                      <h5 class="mb-2">Gestionnaire de couleurs</h5>
+                      <h5 class="mb-2">Gestionnaire de couleurs*</h5>
                       <div class="mb-4 input-group">
                         <select v-model="couleur" class="form-control select">
                           <option
@@ -211,7 +211,7 @@
                       </div>
                     </div>
                     <div class="px-4 mb-4 col-md-4">
-                      <h5 class="mb-2">Gestionnaire de taille</h5>
+                      <h5 class="mb-2">Gestionnaire de taille*</h5>
                       <div class="mb-4 input-group">
                         <select v-model="size" class="form-control select">
                           <option
@@ -260,8 +260,8 @@
 
                         <input
                           type="file"
-                          name="photo1"
                           id="addprofile"
+                          @change="processFile($event)"
                           hidden
                         />
 
@@ -282,7 +282,12 @@
                           <span class="fa fa-edit"></span> image secondary
                         </button>
 
-                        <input type="file" id="addprofile1" hidden />
+                        <input
+                          type="file"
+                          id="addprofile1"
+                          @change="processFile1($event)"
+                          hidden
+                        />
 
                         <img
                           src=""
@@ -301,7 +306,12 @@
                           <span class="fa fa-edit"></span> image secondary
                         </button>
 
-                        <input type="file" id="addprofile2" hidden />
+                        <input
+                          type="file"
+                          id="addprofile2"
+                          @change="processFile2($event)"
+                          hidden
+                        />
 
                         <img
                           src=""
@@ -320,7 +330,12 @@
                           <span class="fa fa-edit"></span> image secondary
                         </button>
 
-                        <input type="file" id="addprofile3" hidden />
+                        <input
+                          type="file"
+                          id="addprofile3"
+                          @change="processFile3($event)"
+                          hidden
+                        />
 
                         <img
                           src=""
@@ -337,9 +352,13 @@
                 <div
                   class="my-4 form-group col-md-12 d-flex justify-content-end"
                 >
-                  <button type="submit" class="btn btn-lg btn-primary d-flex align-items-center">
-                    <span class="mx-4 save">Enregistrer</span> 
-                    <half-circle-spinner v-if="vis == 1"
+                  <button
+                    type="submit"
+                    class="btn btn-lg btn-primary d-flex align-items-center"
+                  >
+                    <span class="mx-4 save">Enregistrer</span>
+                    <half-circle-spinner
+                      v-if="vis == 1"
                       :animation-duration="1000"
                       :size="30"
                       color="#fff"
@@ -487,6 +506,10 @@ export default {
       s2_categories: null,
       s3_categories: null,
       s4_categories: null,
+      prod: null,
+      prod1: null,
+      prod2: null,
+      prod3: null,
     };
   },
 
@@ -554,10 +577,268 @@ export default {
   },
 
   methods: {
-    create_produit() {
-      this.vis = 1
+    processFile(event) {
+      this.prod = event.target.files[0];
     },
-    
+    processFile1(event) {
+      this.prod1 = event.target.files[0];
+    },
+    processFile2(event) {
+      this.prod2 = event.target.files[0];
+    },
+    processFile3(event) {
+      this.prod3 = event.target.files[0];
+    },
+    create_produit() {
+      if (
+        this.nom != null &&
+        this.s_cat_n1 != null &&
+        this.s_cat_n2 != null &&
+        this.marque != null &&
+        this.colors_choise.length != 0 &&
+        this.sizes_choise.length != 0 &&
+        this.prices_choise.length != 0
+      ) {
+        if (
+          this.prod != null &&
+          this.prod1 != null &&
+          this.prod2 != null &&
+          this.prod3 != null
+        ) {
+          this.vis = 1;
+          let data = {
+            nom: this.nom,
+            description: this.description,
+            id_vendeur: this.$route.params.id,
+            id_cat: this.s_cat_n1,
+            id_cat_sous: this.s_cat_n2,
+            id_cat_sous1: this.s_cat_n3 ?? null,
+            id_cat_sous2: this.s_cat_n4 ?? null,
+            id_marque: this.marque,
+          };
+          this.$http.post(`${this.callback}/produit`, data).then(
+            (response) => {
+              let data = response.body;
+
+              console.log(data);
+              if (data.status == true) {
+                let id_prod = data.data.id;
+                ////////////////////////
+                // enregistrement de prix pour le produit
+                ///////////////////////
+                let prix = this.prices_choise;
+                for (let i = 0; i < prix.length; i++) {
+                  let data_prix = {
+                    id_prod: id_prod,
+                    nbr: prix[i].nbr,
+                    prix: parseInt(prix[i].price),
+                  };
+                  this.$http.post(`${this.callback}/prix`, data_prix).then(
+                    (response) => {
+                      let data = response.body;
+
+                      console.log(data);
+                      if (data.status == true) {
+                        this.$swal(
+                          "Success!",
+                          "Prix associer avec success",
+                          "success"
+                        );
+                      }
+                    },
+                    (response) => {
+                      console.log(response);
+                    }
+                  );
+                }
+
+                /////////////////////////
+                // enregistrement de couleur pour les produit
+                ////////////////////////
+                let col = this.colors_choise;
+                for (let i = 0; i < col.length; i++) {
+                  let data_col = {
+                    id_prod: id_prod,
+                    id_couleur: col[i].id,
+                  };
+                  this.$http
+                    .post(`${this.callback}/affectation/color`, data_col)
+                    .then(
+                      (response) => {
+                        let data = response.body;
+
+                        console.log(data);
+                        if (data.status == true) {
+                          this.$swal(
+                            "Success!",
+                            "couleur associer avec success",
+                            "success"
+                          );
+                        }
+                      },
+                      (response) => {
+                        console.log(response);
+                      }
+                    );
+                }
+
+                /////////////////////////
+                // enregistrement de size pour les produit
+                ////////////////////////
+                let size = this.sizes_choise;
+                for (let i = 0; i < size.length; i++) {
+                  let data_size = {
+                    id_prod: id_prod,
+                    id_size: size[i].id,
+                  };
+                  this.$http
+                    .post(`${this.callback}/affectation/size`, data_size)
+                    .then(
+                      (response) => {
+                        let data = response.body;
+
+                        console.log(data);
+                        if (data.status == true) {
+                          this.$swal(
+                            "Success!",
+                            "sizes associer avec success",
+                            "success"
+                          );
+                        }
+                      },
+                      (response) => {
+                        console.log(response);
+                      }
+                    );
+                }
+
+                /////////////////////////
+                /// uploader image1 de produit
+                /////////////////////////
+                let formData = new FormData();
+                formData.append("id_prod", id_prod);
+                formData.append("img", this.prod);
+
+                this.$http.post(`${this.callback}/image`, formData).then(
+                  (response) => {
+                    let data = response.body;
+
+                    console.log(data);
+                    if (data.status == true) {
+                      this.$swal(
+                        "Success!",
+                        "Image principale associer avec success",
+                        "success"
+                      );
+                    }
+                  },
+                  (response) => {
+                    console.log(response);
+                  }
+                );
+
+                /////////////////////////
+                /// uploader image2 de produit
+                /////////////////////////
+                let formData1 = new FormData();
+                formData1.append("id_prod", id_prod);
+                formData1.append("img", this.prod1);
+
+                this.$http.post(`${this.callback}/image`, formData1).then(
+                  (response) => {
+                    let data = response.body;
+
+                    console.log(data);
+                    if (data.status == true) {
+                      this.$swal(
+                        "Success!",
+                        "Image secondaire associer avec success",
+                        "success"
+                      );
+                    }
+                  },
+                  (response) => {
+                    console.log(response);
+                  }
+                );
+
+                /////////////////////////
+                /// uploader image3 de produit
+                /////////////////////////
+                let formData2 = new FormData();
+                formData2.append("id_prod", id_prod);
+                formData2.append("img", this.prod2);
+
+                this.$http.post(`${this.callback}/image`, formData2).then(
+                  (response) => {
+                    let data = response.body;
+
+                    console.log(data);
+                    if (data.status == true) {
+                      this.$swal(
+                        "Success!",
+                        "Image principale associer avec success",
+                        "success"
+                      );
+                    }
+                  },
+                  (response) => {
+                    console.log(response);
+                  }
+                );
+
+                /////////////////////////
+                /// uploader image1 de produit
+                /////////////////////////
+                let formData3 = new FormData();
+                formData3.append("id_prod", id_prod);
+                formData3.append("img", this.prod3);
+
+                this.$http.post(`${this.callback}/image`, formData3).then(
+                  (response) => {
+                    let data = response.body;
+
+                    console.log(data);
+                    if (data.status == true) {
+                      this.$swal(
+                        "Success!",
+                        "Image principale associer avec success",
+                        "success"
+                      );
+                    }
+                  },
+                  (response) => {
+                    console.log(response);
+                  }
+                );
+                
+                setTimeout(() => {
+                  this.vis = 0;
+                  this.$swal(
+                    "Success!",
+                    "Produit creer avec success",
+                    "success"
+                  );
+                  $('#form').reset()
+                }, 15000);
+              }
+            },
+            (response) => {
+              console.log(response);
+            }
+          );
+        } else {
+          this.$swal(
+            "Error!",
+            "Veuillez selectionner les images de produits",
+            "error"
+          );
+        }
+      } else {
+        this.$swal("Error!", "Veuillez remplire tous les champs", "error");
+      }
+    },
+
     recherche_s1() {
       if (this.s_cat_n1 != null) {
         this.$http.get(`${this.callback}/cat_sous/${this.s_cat_n1}`, {}).then(

@@ -1,6 +1,5 @@
 <template>
-    <div>
-        
+  <div>
     <section
       class="sm-hidden bg-light border-bottom"
       data-aos="zoom-out"
@@ -34,7 +33,7 @@
             </p>
             <p class="mx-4 text-black">|</p>
             <p class="text-black">
-              <router-link :to="{name: 'produit_create'}" class="a"
+              <router-link :to="{ name: 'produit_create' }" class="a"
                 ><i class="mx-2 far fa-user"></i> Mon Compte
                 <i class="mx-2 fas fa-caret-down"></i
               ></router-link>
@@ -129,10 +128,13 @@
                     <option value="" selected disabled>
                       Tous les Catégories
                     </option>
-                    <option value="">Cosmétiques</option>
-                    <option value="">Vêtements & Chaussures</option>
-                    <option value="">Phone & Télécommunication</option>
-                    <option value="">Electro-menagères</option>
+                    <option
+                      v-for="cat in categories"
+                      :key="cat.id"
+                      v-bind:value="cat.id"
+                    >
+                      {{ cat.nom }}
+                    </option>
                   </select>
                 </div>
                 <div class="input-group-prepend">
@@ -141,15 +143,15 @@
               </div>
               <div class="mx-2 form-group">
                 <a href="#" class="mt-2 a"><small>Cosmétiques</small></a>
-                <small class="text-light">|</small>
+                <small class="mx-2 text-light">|</small>
                 <a href="#" class="mt-2 a"
                   ><small>Vêtements & Chaussures</small></a
                 >
-                <small class="text-light">|</small>
+                <small class="mx-2 text-light">|</small>
                 <a href="#" class="mt-2 a"
                   ><small>Phone & Télécommunication</small></a
                 >
-                <small class="text-light">|</small>
+                <small class="mx-2 text-light">|</small>
                 <a href="#" class="mt-2 a"><small>Electro-menagères</small></a>
               </div>
             </form>
@@ -160,7 +162,7 @@
             <div class="cart-div">
               <a href="panier.html" class="relative">
                 <p class="text-black cart">
-                  <i class="fab fa-opencart" style="font-size: 30px;"></i>
+                  <i class="fab fa-opencart" style="font-size: 30px"></i>
                 </p>
                 <p class="nbr"><small>0</small></p>
               </a>
@@ -233,10 +235,13 @@
                     <option value="" selected disabled>
                       Tous les Catégories
                     </option>
-                    <option value="">Cosmétiques</option>
-                    <option value="">Vêtements & Chaussures</option>
-                    <option value="">Phone & Télécommunication</option>
-                    <option value="">Electro-menagères</option>
+                    <option
+                      v-for="cat in categories"
+                      :key="cat.id"
+                      v-bind:value="cat.id"
+                    >
+                      {{ cat.nom }}
+                    </option>
                   </select>
                 </div>
                 <div class="input-group-prepend">
@@ -249,7 +254,7 @@
             <div class="cart">
               <a href="panier.html" class="relative">
                 <p class="text-black cart">
-                  <i class="fab fa-opencart" style="font-size: 30px;"></i>
+                  <i class="fab fa-opencart" style="font-size: 30px"></i>
                 </p>
                 <p class="nbr"><small>0</small></p>
               </a>
@@ -308,12 +313,34 @@
         </div>
       </div>
     </section>
-
-    </div>
+  </div>
 </template>
 
 <script>
 export default {
-    
-}
+  data() {
+    return {
+      callback: "http://127.0.0.1:8000/api",
+      categories: null,
+    };
+  },
+
+  mounted() {
+    this.$http.get(`${this.callback}/categories`, {}).then(
+      (response) => {
+        let data = response.body;
+
+        console.log(data);
+        if (data.status == true) {
+          this.categories = data.data;
+        }
+      },
+      (response) => {
+        console.log(response);
+      }
+    );
+  },
+
+  methods: {},
+};
 </script>
